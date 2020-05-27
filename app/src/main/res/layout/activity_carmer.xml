@@ -22,31 +22,41 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-
+        android:layout_margin="10dp"
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btn_cature"
+            android:id="@+id/btn_capture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/cookierun"
+            android:textSize="30sp"
+            android:background="@drawable/btn_carmer"
+            android:textColor="#ffffff"
+            android:layout_marginRight="10dp"
             android:text="촬영" />
 
         <Button
-            android:id="@+id/btn_test"
+            android:id="@+id/btn_album"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="검색 결과 테스트" />
+            android:fontFamily="@font/cookierun"
+            android:textSize="30sp"
+            android:background="@drawable/btn_carmer"
+            android:textColor="#ffffff"
+            android:text="앨범" />
 
-        <TextView
-            android:id="@+id/result1"
+        <Button
+            android:id="@+id/btn_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:fontFamily="@font/cookierun"
+            android:textSize="25sp"
+            android:background="@drawable/btn_carmer"
+            android:textColor="#ffffff"
+            android:layout_marginLeft="10dp"
+            android:text="검색 시작" />
 
-        <EditText
-            android:id="@+id/edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+
     </LinearLayout>
 </LinearLayout>

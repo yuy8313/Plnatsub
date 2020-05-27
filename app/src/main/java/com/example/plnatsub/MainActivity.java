@@ -44,7 +44,7 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button main_btn1,main_btn2,main_btn3;
+    Button main_btn1,main_btn2;
     ImageView gallery_img;
     Boolean album = false;
     private final  String TAG = getClass().getSimpleName();
@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
 
         main_btn1 = findViewById(R.id.main_btn1);
         main_btn2 = findViewById(R.id.main_btn2);
-        main_btn3 = findViewById(R.id.main_btn3);
         //gallery_img = findViewById(R.id.gallery_img);
 
         // 권한 체크
@@ -89,10 +88,7 @@ public class MainActivity extends AppCompatActivity {
         main_btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
-                intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, PICK_FROM_ALBUM);
+
             }
         });
         initMyAPI(BASE_URL);
@@ -185,8 +181,6 @@ public class MainActivity extends AppCompatActivity {
             cropIntent.putExtra("output",albumURI);
             Log.d(TAG,"ㅇ12521ㄱㅂㅈㅁㄴㅇㄱㅇ : " + albumURI);
         }
-
-
         startActivityForResult(cropIntent, CROP_FROM_ALBUM);
     }
     public String getImageNameToUri(Uri data)

@@ -33,18 +33,9 @@
             android:background="@drawable/btn_main"
             android:text="식물촬영"/>
 
-        <Button
-            android:id="@+id/main_btn2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
-            android:textSize="40sp"
-            android:fontFamily="@font/cookierun"
-            android:background="@drawable/btn_main"
-            android:text="사진 불러오기"/>
 
         <Button
-            android:id="@+id/main_btn3"
+            android:id="@+id/main_btn2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="50dp"

@@ -51,8 +51,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class PlnatCarmer extends AppCompatActivity {
     private static final int REQUEST_TAKE_PHOTO = 1;
     private static final int REQUEST_IMAGE_CROP = 2;
+    private static final int PICK_FROM_ALBUM = 3;
+    private static final int CROP_FROM_ALBUM = 4;
     private MyAPI mMyAPI;
-    private TextView mListTv;
     private final  String TAG = getClass().getSimpleName();
     // server의 url을 적어준다
     private final String BASE_URL = "http://6fce80ee.ngrok.io";
@@ -60,42 +61,55 @@ public class PlnatCarmer extends AppCompatActivity {
 
     private static final int REQUEST_IMAGE_CAPTURE = 672;
     private String imageFilePath;
-    private Uri photoUri;
-    Button btn_cature;
+    //private Uri photoUri;
+    Uri photoURI,albumURI = null;
+    Boolean album = false;
+    Button btn_capture, btn_album;
     ImageView image_result;
-    EditText edit;
-    String content;
-    Button btn_test;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_carmer);
-        mListTv = findViewById(R.id.result1);
+        //mListTv = findViewById(R.id.result1);
 
-        btn_cature = findViewById(R.id.btn_cature);
+        btn_capture = findViewById(R.id.btn_capture);
         image_result = findViewById(R.id.image_result);
-        edit = findViewById(R.id.edit);
+        btn_album = findViewById(R.id.btn_album);
+        //edit = findViewById(R.id.edit);
 
-        btn_test = findViewById(R.id.btn_test);
+
+
 
 
         initMyAPI(BASE_URL);
 
-        btn_cature.setOnClickListener(new View.OnClickListener() {
+        btn_capture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dispatchTakePictureIntent();
             }
         });
 
-        btn_test.setOnClickListener(new View.OnClickListener() {
+        btn_album.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callAlbum();
+            }
+        });
+
+
+
+       /* btn_test.setOnClickListener(new View.OnClickListener() { //검색결과화면 연결
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(PlnatCarmer.this, SearchResult.class);
                 startActivity(intent);
             }
         });
+        */
 
     }
 
@@ -112,14 +126,19 @@ public class PlnatCarmer extends AppCompatActivity {
             }
 
             if (photoFile != null) {
-                photoUri = FileProvider.getUriForFile(getApplicationContext(), getPackageName(), photoFile);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                photoURI = FileProvider.getUriForFile(getApplicationContext(), getPackageName(), photoFile);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 //startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
-                startActivityForResult(intent, REQUEST_TAKE_PHOTO);
-
-
+                startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
             }
         }
+    }
+
+    public void callAlbum(){
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
+        intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, PICK_FROM_ALBUM);
     }
 
 
@@ -138,6 +157,7 @@ public class PlnatCarmer extends AppCompatActivity {
         return image;
     }
 
+    /*
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -174,6 +194,80 @@ public class PlnatCarmer extends AppCompatActivity {
         }
     }
 
+     */
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK) {
+            Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
+        }else{
+            switch (requestCode){
+                case PICK_FROM_ALBUM:
+                    album = true;
+                    File albumFile = null;
+                    try{
+                        albumFile = createImage();
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+                    if(albumFile != null){
+                        albumURI = Uri.fromFile(albumFile);
+                    }
+                    photoURI = data.getData();
+                    Log.d(TAG,"ㅇㅇㅇㅇ : " + photoURI);
+                    cropImageAlbum();
+
+                case CROP_FROM_ALBUM:
+                    Bitmap photo = BitmapFactory.decodeFile(albumURI.getPath());
+                    image_result.setImageBitmap(photo);
+                    Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                    ImageUpdate();
+                    if(album == false){
+                        mediaScanIntent.setData(photoURI);
+                    }else if(album == true){
+                        album = false;
+                        mediaScanIntent.setData(albumURI);
+                    }
+                    Log.d(TAG,"ㅇㅇㅇㅅㅂㅈㄱㅇ : " + mediaScanIntent.setData(photoURI));
+                    this.sendBroadcast(mediaScanIntent);
+
+                    break;
+
+                case REQUEST_IMAGE_CAPTURE:
+                    Bitmap bitmap = BitmapFactory.decodeFile(imageFilePath);
+                    ExifInterface exif = null;
+                    galleryAddPic();
+                    ImageUpdate();
+
+                    try {
+                        exif = new ExifInterface(imageFilePath);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    int exifOrientation;
+                    int exifDegree;
+
+                    if (exif != null) {
+                        exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+                        exifDegree = exifOrientationToDegress(exifOrientation);
+
+
+                    } else {
+                        exifDegree = 0;
+
+                    }
+
+                    //cropImagePhoto();
+                    image_result.setImageBitmap(rotate(bitmap,exifDegree));
+
+
+            }
+        }
+    }
+
+
     private int exifOrientationToDegress(int exifOrientation) {
         if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
             return 90;
@@ -202,21 +296,61 @@ public class PlnatCarmer extends AppCompatActivity {
 //        Log.i( "사진이 앨범에 저장되었습니다.",imageFilePath+"ㅇㅇ"+intent);
     }
 
-    private void cropImage(){
+    private File createImage() throws IOException{
+//        String imageFileName ="tmp_" + String.valueOf(System.currentTimeMillis())+".jpg";
+//        File storageDir = new File(Environment.getExternalStorageDirectory(),imageFileName);
+//        mCurrentPhotoPath = storageDir.getAbsolutePath();
+//        return storageDir;
+
+
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "TEST_" + timeStamp + "_";
+//        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES); // 보안에걸려서 못끄냄
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+        File image = File.createTempFile(
+                imageFileName,
+                ".jpg",
+                storageDir
+        );
+        imageFilePath = image.getAbsolutePath();
+
+        return image;
+    }
+
+    private void cropImagePhoto(){
         Intent cropIntent = new Intent("com.android.camera.action.CROP");
-        cropIntent.setDataAndType(photoUri,"image/*");
+        cropIntent.setDataAndType(photoURI,"image/*");
         cropIntent.putExtra("outputX",1080);
         cropIntent.putExtra("outputY",1080);
         cropIntent.putExtra("aspectX",1);
         cropIntent.putExtra("aspectY",1);
         cropIntent.putExtra("scale",true);
 
-            cropIntent.putExtra("output",photoUri);
-            Log.d(TAG,"ㅇㅇㅇㅅㅂㅈㄱㅇ : " + photoUri);
+            cropIntent.putExtra("output",photoURI);
+            Log.d(TAG,"ㅇㅇㅇㅅㅂㅈㄱㅇ : " + photoURI);
 
-        startActivityForResult(cropIntent, REQUEST_IMAGE_CROP);
+        startActivityForResult(cropIntent, CROP_FROM_ALBUM);
+        //startActivityForResult(cropIntent, REQUEST_IMAGE_CROP);
     }
 
+    private void cropImageAlbum() {
+        Intent cropIntent = new Intent("com.android.camera.action.CROP");
+        cropIntent.setDataAndType(photoURI, "image/*");
+        cropIntent.putExtra("outputX", 1080);
+        cropIntent.putExtra("outputY", 1080);
+        cropIntent.putExtra("aspectX", 1);
+        cropIntent.putExtra("aspectY", 1);
+        cropIntent.putExtra("scale", true);
+        if (album == false) {
+            cropIntent.putExtra("output", photoURI);
+            Log.d(TAG, "ㅇㅇㅇㅅㅂㅈㄱㅇ : " + photoURI);
+        } else if (album == true) {
+            cropIntent.putExtra("output", albumURI);
+            Log.d(TAG, "ㅇ12521ㄱㅂㅈㅁㄴㅇㄱㅇ : " + albumURI);
+        }
+        startActivityForResult(cropIntent, CROP_FROM_ALBUM);
+    }
+/*
     public void getaccount(){
         Log.d(TAG,"GET");
         Call<List<AccountItem>> getCall = mMyAPI.get_accounts();
@@ -242,7 +376,12 @@ public class PlnatCarmer extends AppCompatActivity {
         });
     }
 
-    public void PostData(){
+
+
+*/
+
+
+/*    public void PostData(){
         content = edit.getText().toString();
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -273,6 +412,9 @@ public class PlnatCarmer extends AppCompatActivity {
             }
         });
     }
+
+ */
+
 
     public void ImageUpdate(){
         File file = new File(imageFilePath);
