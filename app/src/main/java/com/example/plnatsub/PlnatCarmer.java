@@ -90,6 +90,8 @@ public class PlnatCarmer extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dispatchTakePictureIntent();
+                //Intent intent = new Intent(PlnatCarmer.this, ImageProcessing.class);  //이미지 촬영화면 새로 만들었을때 연결
+                //startActivity(intent);
             }
         });
 
