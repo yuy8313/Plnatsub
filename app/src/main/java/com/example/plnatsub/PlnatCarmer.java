@@ -64,7 +64,7 @@ public class PlnatCarmer extends AppCompatActivity {
     //private Uri photoUri;
     Uri photoURI,albumURI = null;
     Boolean album = false;
-    Button btn_capture, btn_album;
+    Button btn_capture, btn_album, btn_search;
     ImageView image_result;
 
 
@@ -78,6 +78,7 @@ public class PlnatCarmer extends AppCompatActivity {
         btn_capture = findViewById(R.id.btn_capture);
         image_result = findViewById(R.id.image_result);
         btn_album = findViewById(R.id.btn_album);
+        btn_search = findViewById(R.id.btn_search);
         //edit = findViewById(R.id.edit);
 
 
@@ -99,6 +100,14 @@ public class PlnatCarmer extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 callAlbum();
+            }
+        });
+
+        btn_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PlnatCarmer.this, SearchResult.class);
+                startActivity(intent);
             }
         });
 

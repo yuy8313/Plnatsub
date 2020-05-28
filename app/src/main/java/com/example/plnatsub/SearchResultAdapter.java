@@ -9,22 +9,26 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+
 public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapter.MyViewHolder> {
     private String[] mDataset;
+    private ArrayList<SearchData> arrayList;
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
+    public SearchResultAdapter(ArrayList<SearchData> arrayList) {
+        this.arrayList = arrayList;
+    }
+
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
-        public TextView TextView_title;
-        public TextView TextView_content;
-        public ImageView ImageView_title;
+        protected ImageView iv_thumbnail;
+        protected TextView tv_title;
+        protected TextView tv_percent;
+
         public MyViewHolder(View v) {
             super(v);
-            TextView_title = v.findViewById(R.id.tv_title);
-            TextView_content = v.findViewById(R.id.tv_percent);
-            ImageView_title = v.findViewById(R.id.iv_thumbnail);
+            this.iv_thumbnail = (ImageView) v.findViewById(R.id.iv_thumbnail);
+            this.tv_title = (TextView) v.findViewById(R.id.tv_title);
+            this.tv_percent = (TextView) v.findViewById(R.id.tv_percent);
         }
     }
 
@@ -36,7 +40,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     // Create new views (invoked by the layout manager)
     @Override
     public SearchResultAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // create a new view
+        // 뷰 만들어지는곳
         LinearLayout v = (LinearLayout) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.row_search_result, parent, false);
         MyViewHolder vh = new MyViewHolder(v);
@@ -48,7 +52,11 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.TextView_title.setText(mDataset[position]);
+        //생성되는것 연결
+        holder.iv_thumbnail.setImageResource(arrayList.get(position).getIv_thumbnail());
+        holder.tv_title.setText(mDataset[position]);
+        holder.tv_percent.setText(mDataset[position]);
+
 
     }
 
