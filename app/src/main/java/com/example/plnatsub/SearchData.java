@@ -8,9 +8,9 @@ public class SearchData {
     private String tv_percent;
 
     public SearchData(int iv_thumbnail, String tv_title, String tv_percent) {
-        this.iv_thumbnail = iv_thumbnail;
-        this.tv_title = tv_title;
-        this.tv_percent = tv_percent;
+        this.iv_thumbnail = iv_thumbnail; //검색결과 꽃 이미지 넣을곳
+        this.tv_title = tv_title; //검색결과 꽃 이름 넣을곳
+        this.tv_percent = tv_percent; //검색결과 꽃 일치율 넣을 곳
 
 
     }

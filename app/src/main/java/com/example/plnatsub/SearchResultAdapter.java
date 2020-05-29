@@ -1,5 +1,6 @@
 package com.example.plnatsub;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,14 +10,18 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapter.MyViewHolder> {
-    private String[] mDataset;
+    //private String[] mDataset;
     private ArrayList<SearchData> arrayList;
+    private Context context;
 
-    public SearchResultAdapter(ArrayList<SearchData> arrayList) {
+    public SearchResultAdapter(ArrayList<SearchData> arrayList, Context context) {
         this.arrayList = arrayList;
+        this.context = context;
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -33,9 +38,11 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
+    /*
     public SearchResultAdapter(String[] myDataset) {
         mDataset = myDataset;
     }
+     */
 
     // Create new views (invoked by the layout manager)
     @Override
@@ -53,9 +60,10 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         //생성되는것 연결
-        holder.iv_thumbnail.setImageResource(arrayList.get(position).getIv_thumbnail());
-        holder.tv_title.setText(mDataset[position]);
-        holder.tv_percent.setText(mDataset[position]);
+        Glide.with(holder.itemView).load(arrayList.get(position).getIv_thumbnail())
+                .into(holder.iv_thumbnail);
+        holder.tv_title.setText(arrayList.get(position).getTv_title());
+        holder.tv_percent.setText(arrayList.get(position).getTv_percent());
 
 
     }
@@ -63,6 +71,6 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return (arrayList != null ? arrayList.size() : 0);
     }
 }
