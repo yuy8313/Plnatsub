@@ -88,7 +88,8 @@ public class MainActivity extends AppCompatActivity {
         main_btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(getApplicationContext(), MyPlantBook.class);
+                startActivity(intent);
             }
         });
         initMyAPI(BASE_URL);

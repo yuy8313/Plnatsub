@@ -1,7 +1,6 @@
 package com.example.plnatsub;
 
 import android.content.Context;
-import android.icu.text.UFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +14,12 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
-public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapter.MyViewHolder> {
+public class MyPlantBookAdapter extends RecyclerView.Adapter<MyPlantBookAdapter.MyViewHolder> {
     //private String[] mDataset;
-    private ArrayList<SearchData> arrayList;
+    private ArrayList<PlantBookData> arrayList;
     private Context context;
 
-    public SearchResultAdapter(ArrayList<SearchData> arrayList, Context context) {
+    public MyPlantBookAdapter(ArrayList<PlantBookData> arrayList, Context context) {
         this.arrayList = arrayList;
         this.context = context;
     }
@@ -28,13 +27,12 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         protected ImageView iv_thumbnail;
         protected TextView tv_title;
-        protected TextView tv_percent;
+
 
         public MyViewHolder(View v) {
             super(v);
             this.iv_thumbnail = (ImageView) v.findViewById(R.id.iv_thumbnail);
             this.tv_title = (TextView) v.findViewById(R.id.tv_title);
-            this.tv_percent = (TextView) v.findViewById(R.id.tv_percent);
         }
     }
 
@@ -47,10 +45,10 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
     // Create new views (invoked by the layout manager)
     @Override
-    public SearchResultAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyPlantBookAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // 뷰 만들어지는곳
         LinearLayout v = (LinearLayout) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.row_search_result, parent, false);
+                .inflate(R.layout.row_my_plant_book, parent, false);
         MyViewHolder vh = new MyViewHolder(v);
         return vh;
     }
@@ -64,7 +62,6 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         Glide.with(holder.itemView).load(arrayList.get(position).getIv_thumbnail())
                 .into(holder.iv_thumbnail);
         holder.tv_title.setText(arrayList.get(position).getTv_title());
-        holder.tv_percent.setText(String.valueOf(arrayList.get(position).getTv_percent()));
 
 
     }
@@ -72,6 +69,6 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return (arrayList != null ? 3 : 0); //리스트에 있는 것중 3개만 출력 리스트가 없으면 0개만 출력
+        return (arrayList != null ? arrayList.size() : 0);
     }
 }
