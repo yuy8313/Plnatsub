@@ -3,34 +3,49 @@ package com.example.plnatsub;
 import android.widget.ImageView;
 
 public class SearchData {
-    private int iv_thumbnail;
-    private String tv_title;
-    private String tv_percent;
+    private String thumbnail;
+    private String title;
+    private int percent;
 
-    public SearchData() {}
-
-    public int getIv_thumbnail() {
-        return iv_thumbnail;
+    public SearchData(String thumbnail, String title, int percent) {
+        this.thumbnail = thumbnail;
+        this.title = title;
+        this.percent = percent;
     }
 
-    public void setIv_thumbnail(int iv_thumbnail) {
-        this.iv_thumbnail = iv_thumbnail;
+    public String getThumbnail() {
+        return thumbnail;
     }
 
-    public String getTv_title() {
-        return tv_title;
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 
-    public void setTv_title(String tv_title) {
-        this.tv_title = tv_title;
+    public String getTitle() {
+        return title;
     }
 
-    public String getTv_percent() {
-        return tv_percent;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public void setTv_percent(String tv_percent) {
-        this.tv_percent = tv_percent;
+    public int getPercent() {
+        return percent;
     }
+
+    public void setPercent(int percent) {
+        this.percent = percent;
+    }
+
+
+    @Override
+    public String toString() {
+        return "SearchData{" +
+                "thumbnail='" + thumbnail + '\'' +
+                ", title='" + title + '\'' +
+                ", percent=" + percent +
+                '}';
+    }
+
 
 }

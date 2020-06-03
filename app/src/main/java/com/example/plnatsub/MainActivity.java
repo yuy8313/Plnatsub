@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     String imageFilePath;
     String mCurrentPhotoPath;
     // server의 url을 적어준다
-    private final String BASE_URL = "http://6fce80ee.ngrok.io";
+    //private final String BASE_URL = "http://6fce80ee.ngrok.io";
 //    private final String BASE_URL = "http://127.0.0.1:8000";
 
     Runserver runserver = new Runserver();
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        initMyAPI(BASE_URL);
+        //initMyAPI(BASE_URL);
     }
 
     PermissionListener permissionListener = new PermissionListener() {
@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
 
         RequestBody mFile = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("images", file.getName(), mFile);
-
+/*
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -226,6 +226,9 @@ public class MainActivity extends AppCompatActivity {
                 Log.i(TAG,"Fail msg : " + t.getMessage());
             }
         });
+
+       */
+
 //        call.enqueue(new Callback<AccountItem>() {
 //            @Override
 //            public void onResponse(Call<AccountItem> call, Response<ResponseBody> response) {

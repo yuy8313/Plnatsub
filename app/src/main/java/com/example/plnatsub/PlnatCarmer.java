@@ -56,7 +56,7 @@ public class PlnatCarmer extends AppCompatActivity {
     private MyAPI mMyAPI;
     private final  String TAG = getClass().getSimpleName();
     // server의 url을 적어준다
-    private final String BASE_URL = "http://6fce80ee.ngrok.io";
+    //private final String BASE_URL = "http://6fce80ee.ngrok.io";
 //    private final String BASE_URL = "http://127.0.0.1:8000";
 
     private static final int REQUEST_IMAGE_CAPTURE = 672;
@@ -85,7 +85,7 @@ public class PlnatCarmer extends AppCompatActivity {
 
 
 
-        initMyAPI(BASE_URL);
+        //initMyAPI(BASE_URL);
 
         btn_capture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,7 +106,7 @@ public class PlnatCarmer extends AppCompatActivity {
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(PlnatCarmer.this, SearchResult.class);
+                Intent intent = new Intent(getApplicationContext(), SearchResult.class);
                 startActivity(intent);
             }
         });
@@ -435,7 +435,7 @@ public class PlnatCarmer extends AppCompatActivity {
 
         RequestBody mFile = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("images", file.getName(), mFile);
-
+/*
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -458,6 +458,10 @@ public class PlnatCarmer extends AppCompatActivity {
                 Log.i(TAG,"Fail msg : " + t.getMessage());
             }
         });
+
+
+ */
+
 //        call.enqueue(new Callback<AccountItem>() {
 //            @Override
 //            public void onResponse(Call<AccountItem> call, Response<ResponseBody> response) {
@@ -471,7 +475,7 @@ public class PlnatCarmer extends AppCompatActivity {
 //            }
 //        });
     }
-
+/*
     private void initMyAPI(String baseUrl){
 
         Log.d(TAG,"initMyAPI : " + baseUrl);
@@ -482,5 +486,8 @@ public class PlnatCarmer extends AppCompatActivity {
 
         mMyAPI = retrofit.create(MyAPI.class);
     }
+
+
+ */
 
 }

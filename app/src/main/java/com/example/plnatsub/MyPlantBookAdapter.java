@@ -59,9 +59,9 @@ public class MyPlantBookAdapter extends RecyclerView.Adapter<MyPlantBookAdapter.
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         //생성되는것 연결
-        Glide.with(holder.itemView).load(arrayList.get(position).getIv_thumbnail())
+        Glide.with(holder.itemView).load(arrayList.get(position).getThumbnail())
                 .into(holder.iv_thumbnail);
-        holder.tv_title.setText(arrayList.get(position).getTv_title());
+        holder.tv_title.setText(arrayList.get(position).getTitle());
 
 
     }
