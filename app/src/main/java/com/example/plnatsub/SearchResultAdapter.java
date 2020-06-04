@@ -3,6 +3,7 @@ package com.example.plnatsub;
 import android.content.Context;
 import android.content.Intent;
 import android.icu.text.UFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     //private String[] mDataset;
     private ArrayList<SearchData> arrayList;
     private Context context;
-
+    private static final String TAG = SearchResult.class.getSimpleName();
     public SearchResultAdapter(ArrayList<SearchData> arrayList, Context context) {
         this.arrayList = arrayList;
         this.context = context;
@@ -75,7 +76,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
                 .into(holder.iv_thumbnail);
         holder.tv_title.setText(arrayList.get(position).getTitle());
         holder.tv_percent.setText(arrayList.get(position).getPercent());
-
+        Log.d(TAG,"ddsdsds" +  arrayList.toString());
 
     }
 

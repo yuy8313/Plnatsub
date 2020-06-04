@@ -52,7 +52,7 @@ public class SearchResult extends AppCompatActivity {
 
 
         // specify an adapter (see also next example)
-        adapter = new SearchResultAdapter(arrayList, this);
+        adapter = new SearchResultAdapter(arrayList, this); //여기가 빈값이다.
         recyclerView.setAdapter(adapter);
 
 
